@@ -5,7 +5,7 @@ import './styles/styles.scss';
 import firebase from 'firebase/compat/app';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { Router } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 
 const history = createBrowserHistory();
@@ -17,9 +17,9 @@ firebase.initializeApp(firebaseConfig);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <Router location={history.location} navigator={history}>
+    <BrowserRouter location={history.location} navigator={history}>
       <App />
-    </Router>
+    </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -8,6 +8,12 @@ const getLineups = () => new Promise((resolve, reject) => {
         .catch(reject);
 });
 
+const getLineup = (id) => new Promise((resolve, reject) => {
+    axios.get(`https://localhost:7141/api/lineups/${id}`)
+      .then((response) => resolve(response.data))
+      .catch(reject);
+});
+
 const updateLineups = (obj) => new Promise((resolve, reject) => {
     axios.patch(`https://localhost:7141/api/lineups/${obj.id}`, obj)
       .then(() => getLineups().then(resolve))
@@ -23,6 +29,7 @@ const createLineup = (obj) => new Promise((resolve, reject) => {
 
 export { 
     getLineups,
+    getLineup,
     updateLineups,
     createLineup,
 };
