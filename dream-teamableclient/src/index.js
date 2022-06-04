@@ -1,12 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import './styles/styles.scss';
+import firebase from 'firebase/compat/app';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 
 const history = createBrowserHistory();
+
+const firebaseConfig = {
+  apiKey: process.env.REACT_APP_API_KEY,
+};
+firebase.initializeApp(firebaseConfig);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

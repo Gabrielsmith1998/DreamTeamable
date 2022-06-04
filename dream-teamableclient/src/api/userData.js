@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getToken } from '../api/authManager';
 
-const dbUrl = 'https://localhost7141/api/dtUsers';
+const dbUrl = 'https://localhost:7141/api/dtUsers';
 
 const getUsers = () => new Promise((resolve, reject) => {
     return getToken().then((token) => {
