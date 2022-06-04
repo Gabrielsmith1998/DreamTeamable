@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import getPlayers from '../api/playerData';
+import { getPlayers } from '../api/playerData';
 import { createLineup, updateLineups } from '../api/lineupData';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebase from 'firebase/compat/app';

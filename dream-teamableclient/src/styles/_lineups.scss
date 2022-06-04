@@ -1,0 +1,48 @@
+.lineups {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.lineup-cards {
+    margin: 10px;
+
+    .avg {
+        background-color: green;
+        color: white
+    }
+
+    .avg-less {
+        background-color: red;
+        color: white
+    }
+
+    .hits {
+        background-color: green;
+        color: white
+    }
+
+    .hits-less {
+        background-color: red;
+        color: white
+    }
+
+    .homeruns {
+        background-color: green;
+        color: white
+    }
+
+    .homeruns-less {
+        background-color: red;
+        color: white
+    }
+
+    .walks {
+        background-color: green;
+        color: white
+    }
+
+    .walks-less {
+        background-color: red;
+        color: white
+    }
+}

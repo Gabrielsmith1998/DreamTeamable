@@ -14,7 +14,6 @@ const _doesUserExist = (firebaseUserId) => {
     }).then(resp => resp.ok));
 };
 
-
 export const getToken = () => {
   const currentUser = firebase.auth().currentUser;
   if (!currentUser) {

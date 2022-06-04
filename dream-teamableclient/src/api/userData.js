@@ -16,6 +16,19 @@ const getUsers = () => new Promise((resolve, reject) => {
     });
 });
 
+const getUser = (firebaseUserId) => new Promise((resolve, reject) => {
+    return getToken().then((token) => {
+        axios
+        .get(`${dbUrl}/${firebaseUserId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then((response) => resolve(response.data))
+        .catch(reject);
+    });
+});
+
 const createUser = (user) => new Promise((resolve, reject) => {
     return getToken().then((token) => {
         axios
@@ -29,4 +42,4 @@ const createUser = (user) => new Promise((resolve, reject) => {
     });
 });
 
-export { createUser, getUsers }
+export { createUser, getUsers, getUser }
