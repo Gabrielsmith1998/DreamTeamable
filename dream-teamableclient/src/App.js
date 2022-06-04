@@ -1,24 +1,27 @@
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
+import { onLoginStatusChange } from './api/authManager';
 import './App.css';
+import Navigation from './Components/Navbar';
+import firebase from 'firebase/compat/app';
+import PublicRoutes from './Routes/PublicRoutes';
+
+const firebaseConfig = {
+  apiKey: process.env.REACT_APP_API_KEY,
+};
+firebase.initializeApp(firebaseConfig);
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
+
+  useEffect(() => {
+    onLoginStatusChange(setIsLoggedIn);
+}, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Navigation isLoggedIn={isLoggedIn} />
+      <PublicRoutes isLoggedIn={isLoggedIn} />
+    </>
   );
 }
 
