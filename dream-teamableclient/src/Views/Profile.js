@@ -5,6 +5,7 @@ import { getPlayers } from '../api/playerData';
 import LineupCards from '../Components/LineupCards';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebase from 'firebase/compat/app';
+import { getFavorites } from '../api/favoriteData';
 
 
 const firebaseConfig = {
@@ -23,6 +24,19 @@ const firebaseConfig = {
 export default function Profile() {
     const [lineups, setLineups] = useState([]);
     const [players, setPlayers] = useState([]);
+    const [favorites, setFavorites] = useState([]);
+
+    useEffect(() => {
+        let isMounted = true;
+        if(isMounted) {
+            getFavorites().then((allFavs) => {
+                setFavorites(allFavs);
+            })
+        }
+        return () => {
+            isMounted = false;
+        };
+    }, []);
 
     useEffect(() => {
         let isMounted = true;
@@ -50,6 +64,21 @@ export default function Profile() {
 
     const usersLineups = lineups.filter((allLineups) => allLineups.userId === uid);
 
+    const favLineupId = [];
+    const favLineups = [];
+
+    favorites.forEach((e) => {
+        favLineupId.push(e);
+    });
+
+    favLineupId.forEach((e) => {
+        lineups.forEach((a) => {
+            if (a.id.toString() === e.lineupId && e.favoriteUid === uid) {
+                favLineups.push(a)
+            }
+        })
+    });
+
     return(
         <div>
             <Link to="/lineup-form">
@@ -59,7 +88,20 @@ export default function Profile() {
                 <>
                 <div className="lineups">
                     {usersLineups.map((lineups) => (
-                        <LineupCards lineups={lineups} key={lineups.id} setLineups={setLineups} players={players} />
+                        <LineupCards lineups={lineups} key={lineups.id} setLineups={setLineups} players={players} favorites={favorites} setFavorites={setFavorites} />
+                    ))}
+                </div>
+                </>
+            ) : (
+                ''
+            )}
+            <br />
+            <h4>Favorites</h4>
+            {lineups ? (
+                <>
+                <div className="lineups">
+                    {favLineups.map((lineups) => (
+                        <LineupCards lineups={lineups} key={lineups.id} setLineups={setLineups} players={players} favorites={favorites} setFavorites={setFavorites} />
                     ))}
                 </div>
                 </>
@@ -68,5 +110,4 @@ export default function Profile() {
             )}
         </div>
     )
-
 }
