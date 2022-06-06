@@ -1,7 +1,8 @@
 import React from 'react';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebase from 'firebase/compat/app';
-import { Card } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
+import { createFavorite, deleteFavorite, getFavorites } from '../api/favoriteData';
 
 
 const firebaseConfig = {
@@ -17,7 +18,7 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-export default function LineupCards({ lineups, players }) {
+export default function LineupCards({ lineups, players, favorites, setFavorites }) {
     const hitsArr = [];
     const homeRuns = [];
     const walks = [];
@@ -32,6 +33,30 @@ export default function LineupCards({ lineups, players }) {
     const right = [];
     const starter = [];
     const closer = [];
+    const test = [];
+    const test2 =[];
+    const fav = [];
+    const lineupId = [];
+    const favUid = [];
+    const favId = [];
+
+    favorites.forEach((e) => {
+        if (e.lineupId === lineups.id.toString() && e.favoriteUid === uid) {
+            fav.push(e.lineupId);
+            favId.push(e.id);
+            favUid.push(e.favoriteUid);
+        }
+    });
+
+    lineupId.push(lineups.id.toString());
+    test.push(lineups.id);
+
+    test.forEach((e) => {
+        if (e === lineups.id) {
+            test2.push(e)
+        }
+    })
+
     players.forEach((e) => {
         if (e.id.toString() === lineups.firstbaseId) {
             names.push(e);
@@ -99,26 +124,43 @@ export default function LineupCards({ lineups, players }) {
         return acc + num / 7
     }, 0);
 
-    return (
-        <>
-            <Card className="lineup-cards" style={{ width: '18rem' }}>
-                <Card.Body>
-                    <h4>{lineups.lineupName}</h4>
-                    <p>1B. {Fb[0].playerName}</p>
-                    <p>2B. {Sb[0].playerName}</p>
-                    <p>SS. {ss[0].playerName}</p>
-                    <p>3B. {thirdb[0].playerName}</p>
-                    <p>LF. {left[0].playerName}</p>
-                    <p>CF. {center[0].playerName}</p>
-                    <p>RF. {right[0].playerName}</p>
-                    <p>SP. {starter[0].playerName}</p>
-                    <p>CP. {closer[0].playerName}</p>
-                    <p>Combined Avg - {combindedAvg.toFixed(3)}</p>
-                    <p>Total Hits - {totalHits}</p>
-                    <p>Total Homeruns - {totalHomeruns}</p>
-                    <p>Total Walks - {totalWalks}</p>
-                </Card.Body>
-            </Card>
-        </>
-    )
-}
+    const setFavoriteUid = () => {
+        if (window.confirm(`Favorite ${lineups.lineupName}?`) === true) {
+            createFavorite({lineupId: test2[0].toString(), favoriteUid: uid}).then(() => getFavorites()).then((e) => setFavorites(e));
+        }
+    }
+
+    const unFavorite = () => {
+        if (window.confirm(`Un-Favorite ${lineups.lineupName}?`) === true) {
+            deleteFavorite(favId[0]).then(e => setFavorites(e));
+        }
+    }
+
+        return (
+            <>
+                <Card className="lineup-cards" style={{ width: '18rem' }}>
+                    <Card.Body>
+                        <h4>{lineups.lineupName}</h4>
+                        <p>1B. {Fb[0].playerName}</p>
+                        <p>2B. {Sb[0].playerName}</p>
+                        <p>SS. {ss[0].playerName}</p>
+                        <p>3B. {thirdb[0].playerName}</p>
+                        <p>LF. {left[0].playerName}</p>
+                        <p>CF. {center[0].playerName}</p>
+                        <p>RF. {right[0].playerName}</p>
+                        <p>SP. {starter[0].playerName}</p>
+                        <p>CP. {closer[0].playerName}</p>
+                        <p>Combined Avg - {combindedAvg.toFixed(3)}</p>
+                        <p>Total Hits - {totalHits}</p>
+                        <p>Total Homeruns - {totalHomeruns}</p>
+                        <p>Total Walks - {totalWalks}</p>
+                        {fav[0] !== lineupId[0] && favUid[0] !== uid ? (
+                            <Button onClick={setFavoriteUid}>Favorite</Button>
+                        ) : (
+                            <Button className="btn-danger" onClick={unFavorite}>Un-Favorite</Button>
+                        )}
+                    </Card.Body>
+                </Card>
+            </>
+        )
+    }
