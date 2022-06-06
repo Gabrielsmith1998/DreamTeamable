@@ -3,6 +3,8 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebase from 'firebase/compat/app';
 import { Button, Card } from 'react-bootstrap';
 import { createFavorite, deleteFavorite, getFavorites } from '../api/favoriteData';
+import { Link } from 'react-router-dom';
+import { deleteLineup } from '../api/lineupData';
 
 
 const firebaseConfig = {
@@ -18,7 +20,7 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-export default function LineupCards({ lineups, players, favorites, setFavorites }) {
+export default function LineupCards({ lineups, players, favorites, setFavorites, setLineups }) {
     const hitsArr = [];
     const homeRuns = [];
     const walks = [];
@@ -39,6 +41,14 @@ export default function LineupCards({ lineups, players, favorites, setFavorites 
     const lineupId = [];
     const favUid = [];
     const favId = [];
+    const user1 = [];
+    const userId = [];
+
+    user1.push(lineups);
+
+    user1.forEach((e) => {
+        userId.push(e.userId);
+    });
 
     favorites.forEach((e) => {
         if (e.lineupId === lineups.id.toString() && e.favoriteUid === uid) {
@@ -56,6 +66,10 @@ export default function LineupCards({ lineups, players, favorites, setFavorites 
             test2.push(e)
         }
     })
+
+    const handleDelete = () => {
+        deleteLineup(lineupId[0]).then((lineup) => setLineups(lineup));
+    };
 
     players.forEach((e) => {
         if (e.id.toString() === lineups.firstbaseId) {
@@ -132,7 +146,7 @@ export default function LineupCards({ lineups, players, favorites, setFavorites 
 
     const unFavorite = () => {
         if (window.confirm(`Un-Favorite ${lineups.lineupName}?`) === true) {
-            deleteFavorite(favId[0]).then(e => setFavorites(e));
+            deleteFavorite(favId[0]).then(() => getFavorites()).then(e => setFavorites(e));
         }
     }
 
@@ -155,10 +169,18 @@ export default function LineupCards({ lineups, players, favorites, setFavorites 
                         <p>Total Homeruns - {totalHomeruns}</p>
                         <p>Total Walks - {totalWalks}</p>
                         {fav[0] !== lineupId[0] && favUid[0] !== uid ? (
-                            <Button onClick={setFavoriteUid}>Favorite</Button>
+                            <Button className="btn-warning" onClick={setFavoriteUid}>Favorite</Button>
                         ) : (
                             <Button className="btn-danger" onClick={unFavorite}>Un-Favorite</Button>
                         )}
+                        {userId[0] === uid ? (
+                        <Link to={`/lineups-edit/${lineupId[0]}`}>
+                          <button type="button" className="btn btn-primary edit-btn">Edit</button>
+                        </Link> 
+                        ) : ("")}
+                        {userId[0] === uid ? (
+                            <Button className="btn-danger" onClick={handleDelete}>Delete</Button>
+                        ) : ("")}
                     </Card.Body>
                 </Card>
             </>

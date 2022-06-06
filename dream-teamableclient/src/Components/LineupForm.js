@@ -172,7 +172,7 @@ const firebaseConfig = {
           className="search-bar"
           placeholder="Lineup Name"
           onChange={handleChange}
-          value={formInput.name}
+          value={formInput.lineupName}
         />
         <br />
         <input
