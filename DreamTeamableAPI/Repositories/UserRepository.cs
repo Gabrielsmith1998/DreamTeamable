@@ -1,5 +1,5 @@
 ﻿using DreamTeamableAPI.Models;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 
 namespace DreamTeamableAPI.Repositories
 {

@@ -7,6 +7,7 @@
         public string LineupName { get; set; }
         public string LineupLogo { get; set; }
         public int Favorite { get; set; }
+        public string CatcherId { get; set; }
         public string FirstbaseId  { get; set; }
         public string SecondbaseId { get; set; }
         public string ThirdbaseId { get; set; }

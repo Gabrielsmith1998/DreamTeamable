@@ -1,5 +1,5 @@
 ﻿using DreamTeamableAPI.Models;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 
 namespace DreamTeamableAPI.Repositories
 {
@@ -73,6 +73,10 @@ namespace DreamTeamableAPI.Repositories
                         {
                             player.Saves = reader.GetString(reader.GetOrdinal("Saves"));
                         }
+                        if (reader.IsDBNull(reader.GetOrdinal("Strikeouts")) == false)
+                        {
+                            player.Strikeouts = reader.GetString(reader.GetOrdinal("Strikeouts"));
+                        }
                         players.Add(player);
 
                     }
@@ -135,6 +139,10 @@ namespace DreamTeamableAPI.Repositories
                         if (reader.IsDBNull(reader.GetOrdinal("Saves")) == false)
                         {
                             player.Saves = reader.GetString(reader.GetOrdinal("Saves"));
+                        }
+                        if (reader.IsDBNull(reader.GetOrdinal("Strikeouts")) == false)
+                        {
+                            player.Strikeouts = reader.GetString(reader.GetOrdinal("Strikeouts"));
                         }
                         return player;
                     }
