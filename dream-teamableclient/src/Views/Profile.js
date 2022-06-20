@@ -84,6 +84,7 @@ export default function Profile() {
             <Link to="/lineup-form">
                 <button type="button" className="btn btn-success edit-btn">Add</button>
             </Link>
+            <h1 className="title">Your Lineups</h1>
             {lineups ? (
                 <>
                 <div className="lineups">
@@ -96,7 +97,7 @@ export default function Profile() {
                 ''
             )}
             <br />
-            <h4>Favorites</h4>
+            <h1 className="title">Your Favorites</h1>
             {lineups ? (
                 <>
                 <div className="lineups">
