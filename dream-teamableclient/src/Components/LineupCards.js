@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebase from 'firebase/compat/app';
 import { Button, Card } from 'react-bootstrap';
 import { createFavorite, deleteFavorite, getFavorites } from '../api/favoriteData';
 import { Link } from 'react-router-dom';
 import { deleteLineup } from '../api/lineupData';
+import { getPlayers } from '../api/playerData';
 
 
 const firebaseConfig = {
@@ -20,12 +21,30 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-export default function LineupCards({ lineups, players, favorites, setFavorites, setLineups }) {
+export default function LineupCards({ lineups, players, favorites, setFavorites, setLineups, setPlayers }) {
+
+    useEffect(() => {
+        let isMounted = true;
+        if(isMounted) {
+            getPlayers().then((allPlayers) => {
+                setPlayers(allPlayers);
+            })
+        }
+        return () => {
+            isMounted = false;
+        };
+    }, []);
+
     const hitsArr = [];
     const homeRuns = [];
     const walks = [];
+    const ks = [];
+    const wins = [];
+    const Saves = [];
+    const losses = [];
     const avg = [];
     const names = [];
+    const catcher = [];
     const Fb = [];
     const Sb = [];
     const ss = [];
@@ -99,6 +118,9 @@ export default function LineupCards({ lineups, players, favorites, setFavorites,
         } else if (e.id.toString() === lineups.closingPitcherId) {
             names.push(e);
             closer.push(e);
+        }  else if (e.id.toString() === lineups.catcherId) {
+            names.push(e);
+            catcher.push(e);
         }
     });
 
@@ -130,12 +152,49 @@ export default function LineupCards({ lineups, players, favorites, setFavorites,
     }, 0);
 
     names.forEach((e) => {
+        if (e.strikeouts !== null) {
+            ks.push(parseInt(e.strikeouts))
+        }
+    });
+    let totalKs = ks.reduce((acc, num) => {
+        return acc + num
+    }, 0);
+
+    names.forEach((e) => {
+        if (e.wins !== null) {
+            wins.push(parseInt(e.wins))
+        }
+    });
+    let totalWins = wins.reduce((acc, num) => {
+        return acc + num
+    }, 0);
+
+    names.forEach((e) => {
+        if (e.losses !== null) {
+            losses.push(parseInt(e.losses))
+        }
+    });
+    let totalLosses = losses.reduce((acc, num) => {
+        return acc + num
+    }, 0);
+
+    names.forEach((e) => {
+        if (e.saves !== null) {
+            Saves.push(parseInt(e.saves))
+        }
+    });
+    let totalSaves = Saves.reduce((acc, num) => {
+        return acc + num
+    }, 0);
+
+
+    names.forEach((e) => {
         if (e.avg !== null) {
             avg.push(parseFloat(e.avg))
         }
     });
     let combindedAvg = avg.reduce((acc, num) => {
-        return acc + num / 7
+        return acc + num / 8
     }, 0);
 
     const setFavoriteUid = () => {
@@ -155,19 +214,24 @@ export default function LineupCards({ lineups, players, favorites, setFavorites,
                 <Card className="lineup-cards" style={{ width: '18rem' }}>
                     <Card.Body>
                         <h4>{lineups.lineupName}</h4>
-                        <p>1B. {Fb[0].playerName}</p>
-                        <p>2B. {Sb[0].playerName}</p>
-                        <p>SS. {ss[0].playerName}</p>
-                        <p>3B. {thirdb[0].playerName}</p>
-                        <p>LF. {left[0].playerName}</p>
-                        <p>CF. {center[0].playerName}</p>
-                        <p>RF. {right[0].playerName}</p>
-                        <p>SP. {starter[0].playerName}</p>
-                        <p>CP. {closer[0].playerName}</p>
+                        <p>C. {catcher[0]?.playerName}</p>
+                        <p>1B. {Fb[0]?.playerName}</p>
+                        <p>2B. {Sb[0]?.playerName}</p>
+                        <p>SS. {ss[0]?.playerName}</p>
+                        <p>3B. {thirdb[0]?.playerName}</p>
+                        <p>LF. {left[0]?.playerName}</p>
+                        <p>CF. {center[0]?.playerName}</p>
+                        <p>RF. {right[0]?.playerName}</p>
+                        <p>SP. {starter[0]?.playerName}</p>
+                        <p>CP. {closer[0]?.playerName}</p>
                         <p>Combined Avg - {combindedAvg.toFixed(3)}</p>
                         <p>Total Hits - {totalHits}</p>
                         <p>Total Homeruns - {totalHomeruns}</p>
                         <p>Total Walks - {totalWalks}</p>
+                        <p>Total Strikeouts - {totalKs}</p>
+                        <p>Total Wins - {totalWins}</p>
+                        <p>Total Losses - {totalLosses}</p>
+                        <p>Total Saves - {totalSaves}</p>
                         {fav[0] !== lineupId[0] && favUid[0] !== uid ? (
                             <Button className="btn-warning" onClick={setFavoriteUid}>Favorite</Button>
                         ) : (

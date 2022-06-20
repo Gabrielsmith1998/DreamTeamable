@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { onLoginStatusChange } from './api/authManager';
-import './App.css';
+import '../src/styles/styles.scss'
 import Navigation from './Components/Navbar';
 import firebase from 'firebase/compat/app';
 import PublicRoutes from './Routes/PublicRoutes';
@@ -18,10 +18,10 @@ function App() {
 }, []);
 
   return (
-    <>
+    <div>
       <Navigation isLoggedIn={isLoggedIn} />
       <PublicRoutes isLoggedIn={isLoggedIn} />
-    </>
+    </div>
   );
 }
 

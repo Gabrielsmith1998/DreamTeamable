@@ -17,9 +17,14 @@ export default function Compare() {
     const hitsArr = [];
     const homeRuns = [];
     const walks = [];
+    const ks = [];
+    const wins = [];
+    const Saves = [];
+    const losses = [];
     const avg = [];
     const names = [];
     const names2 = [];
+    const catcher = [];
     const Fb = [];
     const Sb = [];
     const ss = [];
@@ -29,6 +34,7 @@ export default function Compare() {
     const right = [];
     const starter = [];
     const closer = [];
+    const catcher2 = [];
     const Fb2 = [];
     const Sb2 = [];
     const ss2 = [];
@@ -66,6 +72,9 @@ export default function Compare() {
         } else if (e.id.toString() === lineup1.closingPitcherId) {
             names.push(e);
             closer.push(e.playerName);
+        } else if (e.id.toString() === lineup1.catcherId) {
+            names.push(e);
+            catcher.push(e.playerName);
         }
     });
 
@@ -97,6 +106,9 @@ export default function Compare() {
         } else if (e.id.toString() === lineup2.closingPitcherId) {
             names2.push(e);
             closer2.push(e.playerName);
+        } else if (e.id.toString() === lineup2.catcherId) {
+            names2.push(e);
+            catcher2.push(e.playerName);
         }
     });
     names.forEach((e) => {
@@ -135,9 +147,49 @@ export default function Compare() {
         return acc + num / 7
     }, 0);
 
+    names.forEach((e) => {
+        if (e.strikeouts !== null) {
+            ks.push(parseInt(e.strikeouts))
+        }
+    });
+    let totalKs = ks.reduce((acc, num) => {
+        return acc + num
+    }, 0);
+
+    names.forEach((e) => {
+        if (e.wins !== null) {
+            wins.push(parseInt(e.wins))
+        }
+    });
+    let totalWins = wins.reduce((acc, num) => {
+        return acc + num
+    }, 0);
+
+    names.forEach((e) => {
+        if (e.losses !== null) {
+            losses.push(parseInt(e.losses))
+        }
+    });
+    let totalLosses = losses.reduce((acc, num) => {
+        return acc + num
+    }, 0);
+
+    names.forEach((e) => {
+        if (e.saves !== null) {
+            Saves.push(parseInt(e.saves))
+        }
+    });
+    let totalSaves = Saves.reduce((acc, num) => {
+        return acc + num
+    }, 0);
+
     const hitsArr2 = [];
     const homeRuns2 = [];
     const walks2 = [];
+    const ks2 = [];
+    const wins2 = [];
+    const Saves2 = [];
+    const losses2 = [];
     const avg2 = [];
     names2.forEach((e) => {
         if (e.hits !== null) {
@@ -173,6 +225,42 @@ export default function Compare() {
     });
     let combindedAvg2 = avg2.reduce((acc, num) => {
         return acc + num / 7
+    }, 0);
+
+    names2.forEach((e) => {
+        if (e.strikeouts !== null) {
+            ks2.push(parseInt(e.strikeouts))
+        }
+    });
+    let totalKs2 = ks2.reduce((acc, num) => {
+        return acc + num
+    }, 0);
+
+    names2.forEach((e) => {
+        if (e.wins !== null) {
+            wins2.push(parseInt(e.wins))
+        }
+    });
+    let totalWins2 = wins2.reduce((acc, num) => {
+        return acc + num
+    }, 0);
+
+    names2.forEach((e) => {
+        if (e.losses !== null) {
+            losses2.push(parseInt(e.losses))
+        }
+    });
+    let totalLosses2 = losses2.reduce((acc, num) => {
+        return acc + num
+    }, 0);
+
+    names2.forEach((e) => {
+        if (e.saves !== null) {
+            Saves2.push(parseInt(e.saves))
+        }
+    });
+    let totalSaves2 = Saves2.reduce((acc, num) => {
+        return acc + num
     }, 0);
 
     useEffect(() => {
@@ -266,8 +354,11 @@ export default function Compare() {
             setLineup2Players(allPlayers);
         })
     };
+
     return (
-        <div>
+        <>
+        <h1 className="title">Compare Lineups</h1>
+        <div className="Compare">
             <select
                 className="dropDown"
                 typeof="text"
@@ -275,7 +366,7 @@ export default function Compare() {
                 value={lineups.id}
             >
                 {' '}
-                <option disabled="disabled" value="">
+                <option disabled selected defaultValue="Lineup 1">
                     Lineup 1
                 </option>{' '}
                 {lineups ? lineups.map((allLineups) => (
@@ -292,7 +383,7 @@ export default function Compare() {
                 value={lineups.id}
             >
                 {' '}
-                <option disabled="disabled" value="">
+                <option disabled selected>
                     Lineup 2
                 </option>{' '}
                 {lineups ? lineups.map((allLineups) => (
@@ -302,11 +393,14 @@ export default function Compare() {
                 )) : ('')}
             </select>
             <br />
+            </div>
+            <div className="compare-cards">
             <Card className="lineup-cards" style={{ width: '18rem' }}>
                 <Card.Body>
                     {lineup1.length !== 0 ? (
                         <>
                             <h4>{lineup1.lineupName}</h4>
+                            <p>C. {catcher[0]}</p>
                             <p>1B. {Fb[0]}</p>
                             <p>2B. {Sb[0]}</p>
                             <p>SS. {ss[0]}</p>
@@ -316,25 +410,47 @@ export default function Compare() {
                             <p>RF. {right[0]}</p>
                             <p>SP. {starter[0]}</p>
                             <p>CP. {closer[0]}</p>
+                            <p>Hitting Stats -</p>
                             {combindedAvg >= combindedAvg2 ? (
-                                <p className="avg">Combined Avg - {combindedAvg.toFixed(3)}</p>
+                                <p className="avg-more">Combined Avg - {combindedAvg.toFixed(3)}</p>
                             ) : (
                                 <p className="avg-less">Combined Avg - {combindedAvg.toFixed(3)}</p>
                             )}
-                            {hitsArr >= hitsArr2 ? (
-                                <p className="hits">Total Hits - {totalHits}</p>
+                            {totalHits >= totalHits2 ? (
+                                <p className="hits-more">Total Hits - {totalHits}</p>
                             ) : (
                                 <p className="hits-less">Total Hits - {totalHits}</p>
                             )}
-                            {homeRuns >= homeRuns2 ? (
-                                <p className="homeruns">Total Homeruns - {totalHomeruns}</p>
+                            {totalHomeruns >= totalHomeruns2 ? (
+                                <p className="hr-more">Total Homeruns - {totalHomeruns}</p>
                             ) : (
-                                <p className="homeruns-less">Total Homeruns - {totalHomeruns}</p>
+                                <p className="hr-less">Total Homeruns - {totalHomeruns}</p>
                             )}
-                            {walks >= walks2 ? (
-                                <p className="walks">Total Walks - {totalWalks}</p>
+                            <p>Pitching Stats -</p>
+                            {totalWalks <= totalWalks2 ? (
+                                <p className="bb-more">Total Walks - {totalWalks}</p>
                             ) : (
-                                <p className="walks-less">Total Walks - {totalWalks}</p>
+                                <p className="bb-less">Total Walks - {totalWalks}</p>
+                            )}
+                            {totalKs >= totalKs2 ? (
+                                <p className="k-more">Total Strikeouts - {totalKs}</p>
+                            ) : (
+                                <p className="k-less">Total Strikeouts - {totalKs}</p>
+                            )}
+                            {totalWins >= totalWins2 ? (
+                                <p className="w-more">Total Wins - {totalWins}</p>
+                            ) : (
+                                <p className="w-less">Total Wins - {totalWins}</p>
+                            )}
+                            {totalLosses <= totalLosses2 ? (
+                                <p className="l-more">Total Losses - {totalLosses}</p>
+                            ) : (
+                                <p className="l-less">Total Losses - {totalLosses}</p>
+                            )}
+                            {totalSaves >= totalSaves2 ? (
+                                <p className="s-more">Total Saves - {totalSaves}</p>
+                            ) : (
+                                <p className="s-less">Total Saves - {totalSaves}</p>
                             )}
                         </>
                     ) : (<h1>Select Lineup 1</h1>)}
@@ -346,6 +462,7 @@ export default function Compare() {
                     {lineup2.length !== 0 ? (
                         <>
                             <h4>{lineup2.lineupName}</h4>
+                            <p>C. {catcher2[0]}</p>
                             <p>1B. {Fb2[0]}</p>
                             <p>2B. {Sb2[0]}</p>
                             <p>SS. {ss2[0]}</p>
@@ -355,31 +472,54 @@ export default function Compare() {
                             <p>RF. {right2[0]}</p>
                             <p>SP. {starter2[0]}</p>
                             <p>CP. {closer2[0]}</p>
+                            <p>Hitting Stats -</p>
                             {combindedAvg2 >= combindedAvg ? (
-                                <p className="avg">Combined Avg - {combindedAvg2.toFixed(3)}</p>
+                                <p className="avg-more">Combined Avg - {combindedAvg2.toFixed(3)}</p>
                             ) : (
                                 <p className="avg-less">Combined Avg - {combindedAvg2.toFixed(3)}</p>
                             )}
-                            {hitsArr2 >= hitsArr ? (
-                                <p className="hits">Total Hits - {totalHits2}</p>
+                            {totalHits2 >= totalHits ? (
+                                <p className="hits-more">Total Hits - {totalHits2}</p>
                             ) : (
                                 <p className="hits-less">Total Hits - {totalHits2}</p>
                             )}
-                            {homeRuns2 >= homeRuns ? (
-                                <p className="homeruns">Total Homeruns - {totalHomeruns2}</p>
+                            {totalHomeruns2 >= totalHomeruns ? (
+                                <p className="hr-more">Total Homeruns - {totalHomeruns2}</p>
                             ) : (
-                                <p className="homeruns-less">Total Homeruns - {totalHomeruns2}</p>
+                                <p className="hr-less">Total Homeruns - {totalHomeruns2}</p>
                             )}
-                            {walks2 >= walks ? (
-                                <p className="walks">Total Walks - {totalWalks2}</p>
+                            <p>Pitching Stats -</p>
+                            {totalWalks2 <= totalWalks ? (
+                                <p className="bb-more">Total Walks - {totalWalks2}</p>
                             ) : (
-                                <p className="walks-less">Total Walks - {totalWalks2}</p>
+                                <p className="bb-less">Total Walks - {totalWalks2}</p>
+                            )}
+                            {totalKs2 >= totalKs ? (
+                                <p className="k-more">Total Strikeouts - {totalKs2}</p>
+                            ) : (
+                                <p className="k-less">Total Strikeouts - {totalKs2}</p>
+                            )}
+                            {totalWins2 >= totalWins ? (
+                                <p className="w-more">Total Wins - {totalWins2}</p>
+                            ) : (
+                                <p className="w-less">Total Wins - {totalWins2}</p>
+                            )}
+                            {totalLosses2 <= totalLosses ? (
+                                <p className="l-more">Total Losses - {totalLosses2}</p>
+                            ) : (
+                                <p className="l-less">Total Losses - {totalLosses2}</p>
+                            )}
+                            {totalSaves2 >= totalSaves ? (
+                                <p className="s-more">Total Saves - {totalSaves2}</p>
+                            ) : (
+                                <p className="s-less">Total Saves - {totalSaves2}</p>
                             )}
                         </>
                     ) : (<h1>Select Lineup 2</h1>)}
                 </Card.Body>
             </Card>
-        </div>
+            </div>
+            </>
     )
 
 }

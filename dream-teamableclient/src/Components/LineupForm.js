@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const initialState = {
     lineupName: '',
     lineupLogo: '',
+    catcherId: '',
     firstbaseId: '',
     secondbaseId: '',
     shortstopId: '',
@@ -70,6 +71,13 @@ const firebaseConfig = {
         setFormInput((prevState) => ({
           ...prevState,
           lineupLogo: e.target.value
+        }));
+      };
+
+      const handleCatcher = (e) => {
+        setFormInput((prevState) => ({
+          ...prevState,
+          catcherId: e.target.value
         }));
       };
 
@@ -155,6 +163,8 @@ const firebaseConfig = {
         }
       };
 
+
+    const catcher = players.filter((allPlayers) => allPlayers.position === "C");
     const firstBase = players.filter((allPlayers) => allPlayers.position === "1B");
     const secondBase = players.filter((allPlayers) => allPlayers.position === "2B");
     const shortstop = players.filter((allPlayers) => allPlayers.position === "SS");
@@ -166,6 +176,8 @@ const firebaseConfig = {
     const closingPitcher = players.filter((allPlayers) => allPlayers.position === "RP");
 
     return(
+      <>
+        <h1 className="title">Create a lineup</h1>
         <div className="lineup-form">
         <form onSubmit={handleSubmit} className="lineup-form">
         <input
@@ -174,13 +186,23 @@ const firebaseConfig = {
           onChange={handleChange}
           value={formInput.lineupName}
         />
-        <br />
-        <input
-          className="search-bar"
-          placeholder="Lineup Logo"
-          onChange={handleLogo}
-          value={formInput.lineupLogo}
-        />
+          <br />
+          <select
+            className="dropDown"
+            typeof="text"
+            onChange={handleCatcher}
+            value={formInput.catcherId}
+          >
+              {' '}
+              <option disabled="disabled" value="">
+                  Catcher
+              </option>{' '}
+              {catcher ? catcher.map((allPlayers) => (
+                  <option key={allPlayers.id} value={allPlayers.id}>
+                      {allPlayers.playerName}
+                  </option>
+              )): ( '' )}
+            </select>
         <br />
           <select
             className="dropDown"
@@ -340,6 +362,7 @@ const firebaseConfig = {
           </button>
         </form>
       </div>
+      </>
     )
 }
 

@@ -8,9 +8,12 @@
     margin: 20px;
 }
 .lineup-cards {
+    background-image: linear-gradient(rgba(97, 172, 97, 0.63),rgb(57, 118, 168));
     margin: 10px;
+    color: white;
 
-    .avg {
+
+    .avg-more {
         background-color: green;
         color: white
     }
@@ -20,7 +23,7 @@
         color: white
     }
 
-    .hits {
+    .hits-more {
         background-color: green;
         color: white
     }
@@ -30,22 +33,62 @@
         color: white
     }
 
-    .homeruns {
+    .hr-more {
         background-color: green;
         color: white
     }
 
-    .homeruns-less {
+    .hr-less {
         background-color: red;
         color: white
     }
 
-    .walks {
+    .bb-more {
         background-color: green;
         color: white
     }
 
-    .walks-less {
+    .bb-less {
+        background-color: red;
+        color: white
+    }
+
+    .k-more {
+        background-color: green;
+        color: white
+    }
+
+    .k-less {
+        background-color: red;
+        color: white
+    }
+
+    .l-more {
+        background-color: green;
+        color: white
+    }
+
+    .l-less {
+        background-color: red;
+        color: white
+    }
+
+    .w-more {
+        background-color: green;
+        color: white
+    }
+
+    .w-less {
+        background-color: red;
+        color: white
+    }
+
+    .s-more {
+        background-color: green;
+        color: white
+    }
+
+    .s-less {
         background-color: red;
         color: white
     }

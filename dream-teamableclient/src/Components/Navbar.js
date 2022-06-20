@@ -25,7 +25,7 @@ const firebaseConfig = {
 export default function Navigation({ isLoggedIn }) {
     return (
         <>
-        <Navbar bg="light" expand="lg">
+        <Navbar className="nav" bg="light" expand="lg">
             <Container>
                 <Navbar.Brand href="/">DreamTeamable</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />

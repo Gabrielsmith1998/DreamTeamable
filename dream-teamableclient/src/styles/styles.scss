@@ -1,1 +1,11 @@
-@import '_lineups'
+@import '_lineups';
+@import '_home';
+@import '_compare';
+@import '_lineup-form';
+@import '_navbar';
+
+body, html {
+    background-image: linear-gradient(rgb(101, 190, 241), rgba(253, 253, 143, 0.548));
+    background-size: cover !important;
+    background-attachment: fixed;
+}
