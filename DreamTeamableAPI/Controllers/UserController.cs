@@ -1,7 +1,7 @@
 ﻿using DreamTeamableAPI.Models;
 using DreamTeamableAPI.Repositories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DreamTeamableAPI.Controllers
 {
@@ -17,25 +17,41 @@ namespace DreamTeamableAPI.Controllers
         }
 
         // GET: PlayerController
+        [Authorize]
         [HttpGet]
         public List<User> Get()
         {
             return _userRepo.GetAllUsers();
         }
 
+        [Authorize]
         [HttpGet("{firebaseUserId}")]
-        public User Get(string firebaseUserId)
+        public User GetUserByFirebaseUid(string firebaseUserId)
         {
             return _userRepo.GetUserByFirebaseUid(firebaseUserId);
+        }
+
+        [HttpGet("DoesUserExist/{firebaseUserId}")]
+        public IActionResult DoesUserExist(string firebaseUserId)
+        {
+            var matchingUser = _userRepo.GetUserByFirebaseUid(firebaseUserId);
+            if (matchingUser == null)
+            {
+                return NotFound();
+            }
+
+            return Ok();
         }
 
         [HttpPost]
         public IActionResult Post(User newUser)
         {
             _userRepo.AddUser(newUser);
-            return Ok(newUser);
+            return CreatedAtAction(
+                nameof(GetUserByFirebaseUid), new { firebaseUserId = newUser.FirebaseUserId }, newUser);
         }
 
+        [Authorize]
         [HttpPatch("{firebaseUserId}")]
         public IActionResult UpdateUser(string firebaseUserId, User user)
         {
@@ -56,6 +72,7 @@ namespace DreamTeamableAPI.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("{firebaseUserId}")]
         public IActionResult DeleteUser(string firebaseUserId)
         {

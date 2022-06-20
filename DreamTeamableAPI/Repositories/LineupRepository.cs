@@ -1,5 +1,5 @@
 ﻿using DreamTeamableAPI.Models;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 
 namespace DreamTeamableAPI.Repositories
 {
@@ -43,6 +43,7 @@ namespace DreamTeamableAPI.Repositories
                             LineupLogo = reader.GetString(reader.GetOrdinal("LineupLogo")),
                             LineupName = reader.GetString(reader.GetOrdinal("LineupName")),
                             Favorite = reader.GetInt32(reader.GetOrdinal("Favorite")),
+                            CatcherId = reader.GetString(reader.GetOrdinal("CatcherId")),
                             FirstbaseId = reader.GetString(reader.GetOrdinal("FirstbaseId")),
                             SecondbaseId = reader.GetString(reader.GetOrdinal("SecondbaseId")),
                             ShortstopId = reader.GetString(reader.GetOrdinal("ShortstopId")),
@@ -75,6 +76,7 @@ namespace DreamTeamableAPI.Repositories
                                                LineupLogo,
                                                LineupName,
                                                Favorite,
+                                               CatcherId,
                                                FirstbaseId,
                                                SecondbaseId,
                                                ShortstopId,
@@ -100,6 +102,7 @@ namespace DreamTeamableAPI.Repositories
                                 LineupLogo = reader.GetString(reader.GetOrdinal("LineupLogo")),
                                 LineupName = reader.GetString(reader.GetOrdinal("LineupName")),
                                 Favorite = reader.GetInt32(reader.GetOrdinal("Favorite")),
+                                CatcherId = reader.GetString(reader.GetOrdinal("CatcherId")),
                                 FirstbaseId = reader.GetString(reader.GetOrdinal("FirstbaseId")),
                                 SecondbaseId = reader.GetString(reader.GetOrdinal("SecondbaseId")),
                                 ShortstopId = reader.GetString(reader.GetOrdinal("ShortstopId")),
@@ -130,15 +133,16 @@ namespace DreamTeamableAPI.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                    INSERT INTO Lineups (UserId, LineupLogo, LineupName, Favorite, FirstbaseId, SecondbaseId, ShortstopId,  ThirdbaseId,  LeftFieldId, CenterFieldId, RightFieldId, StartingPitcherId, ClosingPitcherId)
+                    INSERT INTO Lineups (UserId, LineupLogo, LineupName, Favorite, CatcherId, FirstbaseId, SecondbaseId, ShortstopId,  ThirdbaseId,  LeftFieldId, CenterFieldId, RightFieldId, StartingPitcherId, ClosingPitcherId)
                     OUTPUT INSERTED.ID
-                    VALUES (@userId, @lineupLogo, @lineupName, @favorite, @firstbaseId, @secondbaseId, @shortstopId, @thirdbaseId, @leftFieldId, @centerFieldId, @rightFieldId, @startingPitcherId, @closingPitcherId);
+                    VALUES (@userId, @lineupLogo, @lineupName, @favorite, @catcherId, @firstbaseId, @secondbaseId, @shortstopId, @thirdbaseId, @leftFieldId, @centerFieldId, @rightFieldId, @startingPitcherId, @closingPitcherId);
                     ";
 
                     cmd.Parameters.AddWithValue("@userId", lineup.UserId);
                     cmd.Parameters.AddWithValue("@lineupLogo", lineup.LineupLogo);
                     cmd.Parameters.AddWithValue("@lineupName", lineup.LineupName);
                     cmd.Parameters.AddWithValue("@favorite", lineup.Favorite);
+                    cmd.Parameters.AddWithValue("@catcherId", lineup.CatcherId);
                     cmd.Parameters.AddWithValue("@firstbaseId", lineup.FirstbaseId);
                     cmd.Parameters.AddWithValue("@secondbaseId", lineup.SecondbaseId);
                     cmd.Parameters.AddWithValue("@shortstopId", lineup.ShortstopId);
@@ -170,6 +174,7 @@ namespace DreamTeamableAPI.Repositories
                                                LineupLogo = @lineupLogo,
                                                LineupName = @lineupName,
                                                Favorite = @favorite,
+                                               CatcherId = @catcherId,
                                                FirstbaseId = @firstbaseId,
                                                SecondbaseId = @secondbaseId,
                                                ShortstopId = @shortstopId,
@@ -186,6 +191,7 @@ namespace DreamTeamableAPI.Repositories
                     cmd.Parameters.AddWithValue("@lineupLogo", lineup.LineupLogo);
                     cmd.Parameters.AddWithValue("@lineupName", lineup.LineupName);
                     cmd.Parameters.AddWithValue("@favorite", lineup.Favorite);
+                    cmd.Parameters.AddWithValue("@catcherId", lineup.CatcherId);
                     cmd.Parameters.AddWithValue("@firstbaseId", lineup.FirstbaseId);
                     cmd.Parameters.AddWithValue("@secondbaseId", lineup.SecondbaseId);
                     cmd.Parameters.AddWithValue("@shortstopId", lineup.ShortstopId);
