@@ -2,7 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { Card } from 'react-bootstrap';
 import { getLineup, getLineups } from '../api/lineupData';
 import { getPlayers } from '../api/playerData';
-import LineupCards from '../Components/LineupCards';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import firebase from 'firebase/compat/app';
+import { getFavorites } from '../api/favoriteData';
+
+
+const firebaseConfig = {
+    apiKey: process.env.REACT_APP_API_KEY,
+  };
+  firebase.initializeApp(firebaseConfig);
+  
+  var uid;
+  const auth = getAuth();
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      uid = user.uid;
+    }
+  });
 
 export default function Compare() {
     const [lineups, setLineups] = useState([]);
@@ -355,6 +371,7 @@ export default function Compare() {
         })
     };
 
+    const usersLineups = lineups.filter((allLineups) => allLineups.userId === uid);
     return (
         <>
         <h1 className="title">Compare Lineups</h1>
@@ -363,13 +380,13 @@ export default function Compare() {
                 className="dropDown"
                 typeof="text"
                 onChange={handleChange}
-                value={lineups.id}
+                defaultValue={"Lineup 1"}
             >
                 {' '}
-                <option disabled selected defaultValue="Lineup 1">
+                <option disabled value="Lineup 1">
                     Lineup 1
                 </option>{' '}
-                {lineups ? lineups.map((allLineups) => (
+                {usersLineups ? usersLineups.map((allLineups) => (
                     <option key={allLineups.id} value={allLineups.id}>
                         {allLineups.lineupName}
                     </option>
@@ -380,10 +397,10 @@ export default function Compare() {
                 className="dropDown"
                 typeof="text"
                 onChange={handleChange2}
-                value={lineups.id}
+                defaultValue={"Lineup 2"}
             >
                 {' '}
-                <option disabled selected>
+                <option disabled value="Lineup 2">
                     Lineup 2
                 </option>{' '}
                 {lineups ? lineups.map((allLineups) => (

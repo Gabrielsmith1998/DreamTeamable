@@ -27,19 +27,19 @@ export default function Register() {
       <Form onSubmit={registerClick} className="register-form">
         <FormGroup>
           <Label for="name">Name</Label>
-          <Input id="name" type="text" autoFocus onChange={e => setName(e.target.value)} required/>
+          <Input className="reg-name" id="name" type="text" autoFocus onChange={e => setName(e.target.value)} required/>
         </FormGroup>
         <FormGroup>
           <Label for="email">Email</Label>
-          <Input id="email" type="text" onChange={e => setEmail(e.target.value)} required />
+          <Input id="email" className="reg-email" type="text" onChange={e => setEmail(e.target.value)} required />
         </FormGroup>
         <FormGroup>
           <Label for="password">Password</Label>
-          <Input id="password" type="password" onChange={e => setPassword(e.target.value)} required />
+          <Input id="password" className="reg-password" type="password" onChange={e => setPassword(e.target.value)} required />
         </FormGroup>
         <FormGroup>
           <Label for="confirmPassword">Confirm Password</Label>
-          <Input id="confirmPassword" type="password" onChange={e => setConfirmPassword(e.target.value)} required />
+          <Input id="confirmPassword" className="reg-password" type="password" onChange={e => setConfirmPassword(e.target.value)} required />
         </FormGroup>
         <FormGroup>
           <Button type="submit" id="register-btn">Register</Button>

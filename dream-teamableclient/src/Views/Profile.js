@@ -82,7 +82,7 @@ export default function Profile() {
     return(
         <div>
             <Link to="/lineup-form">
-                <button type="button" className="btn btn-success edit-btn">Add</button>
+                <button type="button" className="btn btn-success add-btn">Add</button>
             </Link>
             <h1 className="title">Your Lineups</h1>
             {lineups ? (

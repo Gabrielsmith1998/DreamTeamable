@@ -9,3 +9,33 @@ body, html {
     background-size: cover !important;
     background-attachment: fixed;
 }
+
+.btn {
+    margin: 10px;
+}
+
+.dropDown {
+    width: 120px;
+}
+
+.login {
+    display: flex;
+    justify-content: center;
+
+    .email, .password {
+        width: 500px;
+    }
+}
+
+.register-container {
+    display: flex;
+    justify-content: center;
+
+    .register-form {
+        align-items: center;
+    
+        .reg-name, .reg-email, .reg-password {
+            width: 700px;
+        }
+    }
+}

@@ -29,17 +29,19 @@ export default function Navigation({ isLoggedIn }) {
             <Container>
                 <Navbar.Brand href="/">DreamTeamable</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                {isLoggedIn ? (
                 <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="me-auto">
-                    <Nav.Link href="/lineups">Lineups</Nav.Link>
-                    <Nav.Link href="/compare">Compare</Nav.Link>
-                    <Nav.Link href={`/profile/${uid}`}>Profile</Nav.Link>
-                        {isLoggedIn
-                        ? <Nav.Link href="/login" onClick={signOutUser}>Logout</Nav.Link>
-                        : <Nav.Link href="/login">Login</Nav.Link>
-                        }
-                    </Nav>
-                </Navbar.Collapse>
+                <Nav className="me-auto">
+                <Nav.Link href="/lineups">Lineups</Nav.Link>
+                <Nav.Link href="/compare">Compare</Nav.Link>
+                <Nav.Link href={`/profile/${uid}`}>Profile</Nav.Link>
+                    {isLoggedIn
+                    ? <Nav.Link href="/login" onClick={signOutUser}>Logout</Nav.Link>
+                    : <Nav.Link href="/login">Login</Nav.Link>
+                    }
+                </Nav>
+            </Navbar.Collapse>
+                ) : ('')}
             </Container>
         </Navbar>
         </>

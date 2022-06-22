@@ -23,18 +23,6 @@ onAuthStateChanged(auth, (user) => {
 
 export default function LineupCards({ lineups, players, favorites, setFavorites, setLineups, setPlayers }) {
 
-    useEffect(() => {
-        let isMounted = true;
-        if(isMounted) {
-            getPlayers().then((allPlayers) => {
-                setPlayers(allPlayers);
-            })
-        }
-        return () => {
-            isMounted = false;
-        };
-    }, []);
-
     const hitsArr = [];
     const homeRuns = [];
     const walks = [];
@@ -224,9 +212,11 @@ export default function LineupCards({ lineups, players, favorites, setFavorites,
                         <p>RF. {right[0]?.playerName}</p>
                         <p>SP. {starter[0]?.playerName}</p>
                         <p>CP. {closer[0]?.playerName}</p>
+                        <p>Hitting Stats -</p>
                         <p>Combined Avg - {combindedAvg.toFixed(3)}</p>
                         <p>Total Hits - {totalHits}</p>
                         <p>Total Homeruns - {totalHomeruns}</p>
+                        <p>Pitching Stats -</p>
                         <p>Total Walks - {totalWalks}</p>
                         <p>Total Strikeouts - {totalKs}</p>
                         <p>Total Wins - {totalWins}</p>
